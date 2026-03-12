@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ACHEI_MZ - Encontre Seu Lar em Moçambique</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800\&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #FF6B35;
+            --secondary: #004E89;
+            --accent: #1A659E;
+            --dark: #0F1419;
+            --light: #F8F9FA;
+            --gray: #6C757D;
+            --success: #28A745;
+            --gradient-1: linear-gradient(135deg, #FF6B35 0%, #F7931E 100%);
+            --gradient-2: linear-gradient(135deg, #004E89 0%, #1A659E 100%);
+            --shadow: 0 10px 40px rgba(0,0,0,0.1);
+            --shadow-hover: 0 20px 60px rgba(0,0,0,0.15);
+        }
+
+        .dark-mode {
+            --dark: #F8F9FA;
+            --light: #0F1419;
+            --gray: #ADB5BD;
+            --shadow: 0 10px 40px rgba(255,255,255,0.05);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--light);
+            color: var(--dark);
+            transition: all 0.3s ease;
+            overflow-x: hidden;
+        }
+
+        /* Preloader */
+        .preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .preloader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loader-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loader-logo {
+            font-size: 4rem;
+            font-weight: 800;
+            animation: pulse 2s infinite;
+        }
+
+        .loader-text {
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            opacity: 0.9;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode header {
+            background: rgba(15,20,25,0.95);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-1);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--gradient-1);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255,107,53,0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255,107,53,0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--dark);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .theme-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            background: var(--gradient-2);
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg);
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(0,78,137,0.05) 0%, rgba(255,107,53,0.05) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: var(--gradient-1);
+            border-radius: 50%;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: slideInLeft 1s ease;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            margin-bottom: 2rem;
+            animation: slideInLeft 1s ease 0.2s both;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 3rem;
+            animation: slideInLeft 1s ease 0.4s both;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .hero-image {
+            position: relative;
+            animation: slideInRight 1s ease;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .floating-card {
+            position: absolute;
+            background: white;
+            padding: 1rem;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .floating-card:nth-child(2) {
+            top: 20%;
+            left: -10%;
+            animation-delay: 0.5s;
+        }
+
+        .floating-card:nth-child(3) {
+            bottom: 20%;
+            right: -10%;
+            animation-delay: 1s;
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* Search Section */
+        .search-section {
+            padding: 2rem;
+            margin-top: -3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow-hover);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr) auto;
+            gap: 1rem;
+            align-items: end;
+        }
+
+        .dark-mode .search-container {
+            background: #1a1f26;
+        }
+
+        .search-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .search-group label {
+            font-weight: 600;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        .search-group select,
+        .search-group input {
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            color: var(--dark);
+        }
+
+        .search-group select:focus,
+        .search-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Properties Section */
+        .properties-section {
+            padding: 4rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 1.1rem;
+        }
+
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .property-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dark-mode .property-card {
+            background: #1a1f26;
+        }
+
+        .property-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .property-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+        }
+
+        .property-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .property-card:hover .property-image img {
+            transform: scale(1.1);
+        }
+
+        .property-badge {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            background: var(--gradient-1);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .property-price {
+            position: absolute;
+            bottom: 1rem;
+            right: 1rem;
+            background: white;
+            color: var(--dark);
+            padding: 0.8rem 1.2rem;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .property-info {
+            padding: 1.5rem;
+        }
+
+        .property-location {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .property-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .property-features {
+            display: flex;
+            gap: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+
+        /* Categories Section */
+        .categories-section {
+            padding: 4rem 2rem;
+            background: linear-gradient(135deg, rgba(0,78,137,0.03) 0%, rgba(255,107,53,0.03) 100%);
+        }
+
+        .categories-grid {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .category-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dark-mode .category-card {
+            background: #1a1f26;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            background: var(--gradient-1);
+            color: white;
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .category-card:hover .category-icon {
+            color: white;
+        }
+
+        .category-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .category-card p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Login Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background: white;
+            padding: 3rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 500px;
+            position: relative;
+            animation: slideUp 0.3s ease;
+        }
+
+        .dark-mode .modal-content {
+            background: #1a1f26;
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        .login-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .login-tab {
+            flex: 1;
+            padding: 1rem;
+            border: none;
+            background: #f0f0f0;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .dark-mode .login-tab {
+            background: #2a2f36;
+            color: white;
+        }
+
+        .login-tab.active {
+            background: var(--gradient-1);
+            color: white;
+        }
+
+        .login-form {
+            display: none;
+        }
+
+        .login-form.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* Admin Panel */
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--light);
+            z-index: 3000;
+            overflow-y: auto;
+        }
+
+        .admin-panel.active {
+            display: block;
+        }
+
+        .admin-header {
+            background: var(--gradient-2);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .admin-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: 250px 1fr;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .admin-sidebar {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            height: fit-content;
+        }
+
+        .dark-mode .admin-sidebar {
+            background: #1a1f26;
+        }
+
+        .admin-menu {
+            list-style: none;
+        }
+
+        .admin-menu li {
+            margin-bottom: 0.5rem;
+        }
+
+        .admin-menu a {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            text-decoration: none;
+            color: var(--dark);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-menu a:hover,
+        .admin-menu a.active {
+            background: var(--gradient-1);
+            color: white;
+        }
+
+        .admin-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .dark-mode .admin-content {
+            background: #1a1f26;
+        }
+
+        /* Upload Section */
+        .upload-zone {
+            border: 3px dashed var(--primary);
+            border-radius: 20px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255,107,53,0.05);
+        }
+
+        .upload-zone:hover {
+            background: rgba(255,107,53,0.1);
+            transform: scale(1.02);
+        }
+
+        .upload-zone i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .upload-zone h3 {
+            margin-bottom: 0.5rem;
+        }
+
+        .upload-zone p {
+            color: var(--gray);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary);
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #adb5bd;
+            text-decoration: none;
+            line-height: 1.8;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: #adb5bd;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+        }
+
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-text h1 {
+                font-size: 2.5rem;
+            }
+
+            .search-container {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .admin-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Success Message */
+        .success-message {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: var(--success);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            display: none;
+            animation: slideInRight 0.3s ease;
+            z-index: 4000;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+    </style>
+<base target="\_blank">
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="loader-content">
+            <div class="loader-logo">ACHEI_MZ</div>
+            <div class="loader-text">Carregando o seu futuro lar...</div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <i class="fas fa-home">
+                ACHEI_MZ
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="#home">Início</a></li>
+                <li><a href="#properties">Imóveis</a></li>
+                <li><a href="#categories">Categorias</a></li>
+                <li><a href="#about">Sobre</a></li>
+                <li><a href="#contact">Contacto</a></li>
+            </ul>
+
+            <div class="nav-actions">
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon">
+                </button>
+                <button class="btn btn-secondary" onclick="openLoginModal()">
+                    <i class="fas fa-user"> Entrar
+                </button>
+                <button class="btn btn-primary" onclick="openLoginModal()">
+                    <i class="fas fa-plus"> Publicar
+                </button>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars">
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Encontre o Seu Lar dos Sonhos em Moçambique com ACHEI_MZ</h1>
+                <p>A primeira plataforma imobiliária digital de Moçambique. Casas, apartamentos, hotéis e vivendas em Maputo e todo o país. Pagamentos em Meticais (MZN).</p>
+                <button class="btn btn-primary" style="font-size: 1.1rem; padding: 1rem 2rem;">
+                    <i class="fas fa-search"> Explorar Imóveis
+                </button>
+
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <div class="stat-number">500+</div>
+                        <div class="stat-label">Imóveis</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">1000+</div>
+                        <div class="stat-label">Clientes</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number">50+</div>
+                        <div class="stat-label">Cidades</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800" alt="Casa Moderna">
+                <div class="floating-card">
+                    <i class="fas fa-check-circle" style="color: var(--success);">
+                    <strong>Verificado</strong>
+                    <p>Proprietários verificados</p>
+                </div>
+                <div class="floating-card">
+                    <i class="fas fa-shield-alt" style="color: var(--primary);">
+                    <strong>Seguro</strong>
+                    <p>Transações protegidas</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <div class="search-group">
+                <label><i class="fas fa-map-marker-alt"> Localização</label>
+                <select>
+                    <option>Todas as cidades</option>
+                    <option>Maputo</option>
+                    <option>Matola</option>
+                    <option>Beira</option>
+                    <option>Nampula</option>
+                    <option>Tete</option>
+                    <option>Quelimane</option>
+                </select>
+            </div>
+
+            <div class="search-group">
+                <label><i class="fas fa-home"> Tipo</label>
+                <select>
+                    <option>Todos os tipos</option>
+                    <option>Casa</option>
+                    <option>Apartamento</option>
+                    <option>Vivenda</option>
+                    <option>Hotel</option>
+                    <option>Terreno</option>
+                    <option>Escritório</option>
+                </select>
+            </div>
+
+            <div class="search-group">
+                <label><i class="fas fa-tag"> Negócio</label>
+                <select>
+                    <option>Comprar & Alugar</option>
+                    <option>Comprar</option>
+                    <option>Alugar</option>
+                </select>
+            </div>
+
+            <div class="search-group">
+                <label><i class="fas fa-money-bill-wave"> Preço (MZN)</label>
+                <select>
+                    <option>Qualquer preço</option>
+                    <option>Até 50.000 MZN</option>
+                    <option>50.000 - 100.000 MZN</option>
+                    <option>100.000 - 500.000 MZN</option>
+                    <option>Acima de 500.000 MZN</option>
+                </select>
+            </div>
+
+            <button class="btn btn-primary" style="height: fit-content;">
+                <i class="fas fa-search"> Buscar
+            </button>
+        </div>
+    </section>
+
+    <!-- Properties Section -->
+    <section class="properties-section" id="properties">
+        <div class="section-header fade-in">
+            <h2>Imóveis em Destaque</h2>
+            <p>Descubra as melhores propriedades disponíveis em Moçambique</p>
+        </div>
+
+        <div class="properties-grid">
+            <div class="property-card fade-in">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600" alt="Casa">
+                    <span class="property-badge">Venda</span>
+                    <div class="property-price">2.500.000 MZN</div>
+                </div>
+                <div class="property-info">
+                    <div class="property-location">
+                        <i class="fas fa-map-marker-alt">
+                        <span>Polana, Maputo</span>
+                    </div>
+                    <h3 class="property-title">Vivenda Moderna com Piscina</h3>
+                    <div class="property-features">
+                        <span class="feature"><i class="fas fa-bed"> 4 Quartos</span>
+                        <span class="feature"><i class="fas fa-bath"> 3 Banhos</span>
+                        <span class="feature"><i class="fas fa-ruler-combined"> 350m²</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card fade-in">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600" alt="Apartamento">
+                    <span class="property-badge">Aluguer</span>
+                    <div class="property-price">45.000 MZN/mês</div>
+                </div>
+                <div class="property-info">
+                    <div class="property-location">
+                        <i class="fas fa-map-marker-alt">
+                        <span>Sommerschield, Maputo</span>
+                    </div>
+                    <h3 class="property-title">Apartamento de Luxo T3</h3>
+                    <div class="property-features">
+                        <span class="feature"><i class="fas fa-bed"> 3 Quartos</span>
+                        <span class="feature"><i class="fas fa-bath"> 2 Banhos</span>
+                        <span class="feature"><i class="fas fa-ruler-combined"> 180m²</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card fade-in">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600" alt="Hotel">
+                    <span class="property-badge">Venda</span>
+                    <div class="property-price">15.000.000 MZN</div>
+                </div>
+                <div class="property-info">
+                    <div class="property-location">
+                        <i class="fas fa-map-marker-alt">
+                        <span>Ponta do Ouro</span>
+                    </div>
+                    <h3 class="property-title">Hotel Boutique à Beira-Mar</h3>
+                    <div class="property-features">
+                        <span class="feature"><i class="fas fa-bed"> 12 Suites</span>
+                        <span class="feature"><i class="fas fa-umbrella-beach"> Praia</span>
+                        <span class="feature"><i class="fas fa-ruler-combined"> 1200m²</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card fade-in">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600" alt="Casa">
+                    <span class="property-badge">Aluguer</span>
+                    <div class="property-price">85.000 MZN/mês</div>
+                </div>
+                <div class="property-info">
+                    <div class="property-location">
+                        <i class="fas fa-map-marker-alt">
+                        <span>Matola</span>
+                    </div>
+                    <h3 class="property-title">Casa Familiar em Condomínio</h3>
+                    <div class="property-features">
+                        <span class="feature"><i class="fas fa-bed"> 3 Quartos</span>
+                        <span class="feature"><i class="fas fa-bath"> 2 Banhos</span>
+                        <span class="feature"><i class="fas fa-car"> 2 Garagens</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card fade-in">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=600" alt="Vivenda">
+                    <span class="property-badge">Venda</span>
+                    <div class="property-price">8.500.000 MZN</div>
+                </div>
+                <div class="property-info">
+                    <div class="property-location">
+                        <i class="fas fa-map-marker-alt">
+                        <span>Machava, Maputo</span>
+                    </div>
+                    <h3 class="property-title">Vivenda com Jardim Espaçoso</h3>
+                    <div class="property-features">
+                        <span class="feature"><i class="fas fa-bed"> 5 Quartos</span>
+                        <span class="feature"><i class="fas fa-bath"> 4 Banhos</span>
+                        <span class="feature"><i class="fas fa-tree"> Jardim</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="property-card fade-in">
+                <div class="property-image">
+                    <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600" alt="Escritório">
+                    <span class="property-badge">Aluguer</span>
+                    <div class="property-price">120.000 MZN/mês</div>
+                </div>
+                <div class="property-info">
+                    <div class="property-location">
+                        <i class="fas fa-map-marker-alt">
+                        <span>Baixa, Maputo</span>
+                    </div>
+                    <h3 class="property-title">Escritório Comercial Moderno</h3>
+                    <div class="property-features">
+                        <span class="feature"><i class="fas fa-users"> Open Space</span>
+                        <span class="feature"><i class="fas fa-video"> Sala Reunião</span>
+                        <span class="feature"><i class="fas fa-ruler-combined"> 200m²</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories Section -->
+    <section class="categories-section" id="categories">
+        <div class="section-header fade-in">
+            <h2>Explore por Categoria</h2>
+            <p>Encontre o tipo de imóvel perfeito para as suas necessidades</p>
+        </div>
+
+        <div class="categories-grid">
+            <div class="category-card fade-in">
+                <div class="category-icon"><i class="fas fa-home"></div>
+                <h3>Casas</h3>
+                <p>120+ disponíveis</p>
+            </div>
+
+            <div class="category-card fade-in">
+                <div class="category-icon"><i class="fas fa-building"></div>
+                <h3>Apartamentos</h3>
+                <p>200+ disponíveis</p>
+            </div>
+
+            <div class="category-card fade-in">
+                <div class="category-icon"><i class="fas fa-hotel"></div>
+                <h3>Hotéis</h3>
+                <p>15+ disponíveis</p>
+            </div>
+
+            <div class="category-card fade-in">
+                <div class="category-icon"><i class="fas fa-warehouse"></div>
+                <h3>Vivendas</h3>
+                <p>80+ disponíveis</p>
+            </div>
+
+            <div class="category-card fade-in">
+                <div class="category-icon"><i class="fas fa-map"></div>
+                <h3>Terrenos</h3>
+                <p>50+ disponíveis</p>
+            </div>
+
+            <div class="category-card fade-in">
+                <div class="category-icon"><i class="fas fa-briefcase"></div>
+                <h3>Comercial</h3>
+                <p>40+ disponíveis</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeLoginModal()">
+                <i class="fas fa-times">
+            </button>
+
+            <div class="login-tabs">
+                <button class="login-tab active" onclick="switchTab('user')">
+                    <i class="fas fa-user"> Utilizador
+                </button>
+                <button class="login-tab" onclick="switchTab('admin')">
+                    <i class="fas fa-lock"> Administrador
+                </button>
+            </div>
+
+            <form class="login-form active" id="userLogin">
+                <h2 style="margin-bottom: 1.5rem; text-align: center;">Entrar como Utilizador</h2>
+                <div class="form-group">
+                    <label>Email ou Telefone</label>
+                    <input type="text" placeholder="exemplo@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    <i class="fas fa-sign-in-alt"> Entrar
+                </button>
+                <p style="text-align: center; margin-top: 1rem; color: var(--gray);">
+                    Não tem conta? <a href="#" style="color: var(--primary);">Registar</a>
+                </p>
+            </form>
+
+            <form class="login-form" id="adminLogin">
+                <h2 style="margin-bottom: 1.5rem; text-align: center;">Área Administrativa</h2>
+                <div class="form-group">
+                    <label>Utilizador</label>
+                    <input type="text" id="adminUser" placeholder="Nome de utilizador" required>
+                </div>
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="adminPass" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+                    <i class="fas fa-shield-alt"> Aceder Admin
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <i class="fas fa-home" style="font-size: 2rem;">
+                <div>
+                    <h2 style="margin: 0;">ACHEI_MZ - Admin</h2>
+                    <small>Bem-vinda, Cassandra Jack</small>
+                </div>
+            </div>
+            <button class="btn btn-secondary" onclick="logoutAdmin()" style="background: rgba(255,255,255,0.2); color: white; border: none;">
+                <i class="fas fa-sign-out-alt"> Sair
+            </button>
+        </div>
+
+        <div class="admin-container">
+            <div class="admin-grid">
+                <div class="admin-sidebar">
+                    <ul class="admin-menu">
+                        <li><a href="#" class="active" onclick="showAdminSection('dashboard')">
+                            <i class="fas fa-tachometer-alt"> Dashboard
+                        </a></li>
+                        <li><a href="#" onclick="showAdminSection('properties')">
+                            <i class="fas fa-home"> Imóveis
+                        </a></li>
+                        <li><a href="#" onclick="showAdminSection('uploads')">
+                            <i class="fas fa-cloud-upload-alt"> Uploads
+                        </a></li>
+                        <li><a href="#" onclick="showAdminSection('users')">
+                            <i class="fas fa-users"> Utilizadores
+                        </a></li>
+                        <li><a href="#" onclick="showAdminSection('messages')">
+                            <i class="fas fa-envelope"> Mensagens
+                        </a></li>
+                        <li><a href="#" onclick="showAdminSection('settings')">
+                            <i class="fas fa-cog"> Configurações
+                        </a></li>
+                    </ul>
+                </div>
+
+                <div class="admin-content" id="adminContent">
+                    <div id="dashboard-section">
+                        <h2 style="margin-bottom: 2rem;">Dashboard</h2>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                            <div style="background: var(--gradient-1); color: white; padding: 1.5rem; border-radius: 15px;">
+                                <i class="fas fa-home" style="font-size: 2rem; opacity: 0.8;">
+                                <h3 style="margin: 1rem 0 0.5rem;">524</h3>
+                                <p>Total Imóveis</p>
+                            </div>
+                            <div style="background: var(--gradient-2); color: white; padding: 1.5rem; border-radius: 15px;">
+                                <i class="fas fa-users" style="font-size: 2rem; opacity: 0.8;">
+                                <h3 style="margin: 1rem 0 0.5rem;">1,234</h3>
+                                <p>Utilizadores</p>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%); color: white; padding: 1.5rem; border-radius: 15px;">
+                                <i class="fas fa-handshake" style="font-size: 2rem; opacity: 0.8;">
+                                <h3 style="margin: 1rem 0 0.5rem;">89</h3>
+                                <p>Negócios Fechados</p>
+                            </div>
+                            <div style="background: linear-gradient(135deg, #dc3545 0%, #fd7e14 100%); color: white; padding: 1.5rem; border-radius: 15px;">
+                                <i class="fas fa-eye" style="font-size: 2rem; opacity: 0.8;">
+                                <h3 style="margin: 1rem 0 0.5rem;">45.2K</h3>
+                                <p>Visualizações</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="uploads-section" style="display: none;">
+                        <h2 style="margin-bottom: 2rem;">Gestão de Uploads</h2>
+                        <p style="margin-bottom: 2rem; color: var(--gray);">Faça upload de fotos, imagens, GIFs e vídeos dos imóveis. Formatos suportados: JPG, PNG, GIF, MP4, MOV.</p>
+
+                        <div class="upload-zone" onclick="document.getElementById('fileInput').click()">
+                            <i class="fas fa-cloud-upload-alt">
+                            <h3>Arraste ficheiros aqui</h3>
+                            <p>ou clique para selecionar</p>
+                            <input type="file" id="fileInput" class="file-input" multiple accept="image/\*,video/\*" onchange="handleFileSelect(event)">
+                        </div>
+
+                        <div id="uploadPreview" style="margin-top: 2rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem;">
+                            <!-- Previews will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="success-message" id="successMessage">
+        <i class="fas fa-check-circle"> <span id="successText">Operação realizada com sucesso!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-home"> ACHEI_MZ</h3>
+                <p>A primeira plataforma imobiliária digital de Moçambique. Conectamos pessoas aos seus lares dos sonhos nosso futuro começa agora.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></a>
+                    <a href="#"><i class="fab fa-instagram"></a>
+                    <a href="#"><i class="fab fa-whatsapp"></a>
+                    <a href="#"><i class="fab fa-telegram-plane"></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Contacto</h3>
+                <p><i class="fas fa-map-marker-alt"> Maputo, Moçambique 🇲🇿</p>
+                <p><i class="fas fa-phone"> (+7) 903 614 89-12</p>
+                <p><i class="fas fa-phone"> (+258) 991 920 46-02</p>
+                <p><i class="fas fa-envelope"> acheimz@gmail.com</p>
+                <p style="margin-top: 1rem;">
+                    <i class="fab fa-whatsapp" style="color: #25D366;"> WhatsApp & Telegram disponíveis
+                </p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Links Rápidos</h3>
+                <p><a href="#">Sobre Nós</a></p>
+                <p><a href="#">Imóveis</a></p>
+                <p><a href="#">Publicar Imóvel</a></p>
+                <p><a href="#">Ajuda & Suporte</a></p>
+                <p><a href="#">Política de Privacidade</a></p>
+            </div>
+
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Subscreva para receber as melhores ofertas em primeira mão.</p>
+                <form style="margin-top: 1rem; display: flex; gap: 0.5rem;">
+                    <input type="email" placeholder="Seu email" style="flex: 1; padding: 0.8rem; border: none; border-radius: 5px;">
+                    <button type="submit" class="btn btn-primary" style="padding: 0.8rem 1.2rem;">
+                        <i class="fas fa-paper-plane">
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2026 ACHEI_MZ. Todos os direitos reservados. | Proprietária: Cassandra Jack</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;">Moçambique 🇲🇿 | Moeda: Metical (MZN) | Código: MZ</p>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem;"> Engenheiro Programador: JANE NUNES GAMA</p>
+        </div>
+    </footer>
+
+    <script>
+        // Preloader
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('preloader').classList.add('hidden');
+            }, 2000);
+        });
+
+        // Theme Toggle
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.theme-toggle i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        }
+
+        // Login Modal
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
+        }
+
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+        }
+
+        function switchTab(type) {
+            const tabs = document.querySelectorAll('.login-tab');
+            const forms = document.querySelectorAll('.login-form');
+
+            tabs.forEach(tab => tab.classList.remove('active'));
+            forms.forEach(form => form.classList.remove('active'));
+
+            if (type === 'user') {
+                tabs[0].classList.add('active');
+                document.getElementById('userLogin').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('adminLogin').classList.add('active');
+            }
+        }
+
+        // Admin Login
+        document.getElementById('adminLogin').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const user = document.getElementById('adminUser').value;
+            const pass = document.getElementById('adminPass').value;
+
+            if (pass === 'AcheiMzjackjan') {
+                closeLoginModal();
+                document.getElementById('adminPanel').classList.add('active');
+                showSuccess('Bem-vinda, Cassandra! Painel administrativo aberto.');
+                document.getElementById('adminPass').value = '';
+            } else {
+                alert('Senha incorreta! Tente novamente.');
+            }
+        });
+
+        function logoutAdmin() {
+            document.getElementById('adminPanel').classList.remove('active');
+            showSuccess('Sessão terminada com sucesso!');
+        }
+
+        // Admin Sections
+        function showAdminSection(section) {
+            const links = document.querySelectorAll('.admin-menu a');
+            links.forEach(link => link.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const content = document.getElementById('adminContent');
+
+            if (section === 'uploads') {
+                content.innerHTML = document.getElementById('uploads-section').innerHTML;
+            } else if (section === 'dashboard') {
+                content.innerHTML = document.getElementById('dashboard-section').innerHTML;
+            } else {
+                content.innerHTML = `
+                    <h2 style="margin-bottom: 2rem; text-transform: capitalize;">${section}</h2>
+                    <p style="color: var(--gray);">Módulo em desenvolvimento. Em breve disponível para Cassandra Jack.</p>
+                `;
+            }
+        }
+
+        // File Upload
+        function handleFileSelect(event) {
+            const files = event.target.files;
+            const preview = document.getElementById('uploadPreview');
+
+            Array.from(files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const div = document.createElement('div');
+                    div.style.cssText = 'position: relative; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.1);';
+
+                    if (file.type.startsWith('image/')) {
+                        div.innerHTML = `
+                            <img src="${e.target.result}" style="width: 100%; height: 150px; object-fit: cover;">
+                            <div style="position: absolute; top: 5px; right: 5px; background: rgba(0,0,0,0.7); color: white; padding: 2px 8px; border-radius: 5px; font-size: 0.8rem;">
+                                <i class="fas fa-check">
+                            </div>
+                        `;
+                    } else {
+                        div.innerHTML = `
+                            <video style="width: 100%; height: 150px; object-fit: cover;">
+                                <source src="${e.target.result}" type="${file.type}">
+                            </video>
+                            <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: white; font-size: 2rem;">
+                                <i class="fas fa-play-circle">
+                            </div>
+                        `;
+                    }
+
+                    preview.appendChild(div);
+                };
+                reader.readAsDataURL(file);
+            });
+
+            showSuccess(`${files.length} ficheiro(s) carregado(s) com sucesso!`);
+        }
+
+        // Success Message
+        function showSuccess(text) {
+            const msg = document.getElementById('successMessage');
+            document.getElementById('successText').textContent = text;
+            msg.classList.add('show');
+            setTimeout(() => {
+                msg.classList.remove('show');
+            }, 3000);
+        }
+
+        // Scroll Animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+        // Smooth Scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Close modal on outside click
+        window.onclick = function(event) {
+            const modal = document.getElementById('loginModal');
+            if (event.target === modal) {
+                closeLoginModal();
+            }
+        }
+    </script>
+</body>
+</html>
